@@ -31,7 +31,7 @@ test('mixin exports methods to manage the store', t => {
 
   t.ok(typeof reduxMixin.attached === 'function', 'redux-mixin#attached is a function');
   t.ok(typeof reduxMixin.detached === 'function', 'redux-mixin#detached is a function');
-  t.ok(typeof reduxMixin.dispatch === 'function', 'redux-mixin#dispatch is a function');
+  t.ok(typeof reduxMixin.redux.dispatch === 'function', 'redux-mixin#dispatch is a function');
   t.end();
 });
 
@@ -54,9 +54,9 @@ test('works with custom elements', { timeout: 500 }, t => {
     },
     attached() {
       setTimeout(() => {
-        this.actions.increment();
-        this.actions.increment();
-        this.actions.increment();
+        this.redux.actions.increment();
+        this.redux.actions.increment();
+        this.redux.actions.increment();
       }, 50);
     },
   });
@@ -75,8 +75,8 @@ test('works with custom elements', { timeout: 500 }, t => {
       };
     },
     onStateUpdate() {
-      if (this.state.counter === 3) {
-        this.dispatch(counterActions.decrement());
+      if (this.redux.state.counter === 3) {
+        this.redux.dispatch(counterActions.decrement());
       }
     },
   });
@@ -91,23 +91,23 @@ test('works with custom elements', { timeout: 500 }, t => {
     onStateUpdate() {
       step++;
 
-      this.el.innerHTML = this.state.counter;
+      this.el.innerHTML = this.redux.state.counter;
 
       switch (step) {
         case 0:
-          t.equal(this.state.counter, 0, 'counter is 0');
+          t.equal(this.redux.state.counter, 0, 'counter is 0');
           break;
         case 1:
-          t.equal(this.state.counter, 1, 'counter is 1');
+          t.equal(this.redux.state.counter, 1, 'counter is 1');
           break;
         case 2:
-          t.equal(this.state.counter, 2, 'counter is 2');
+          t.equal(this.redux.state.counter, 2, 'counter is 2');
           break;
         case 3:
-          t.equal(this.state.counter, 3, 'counter is 3');
+          t.equal(this.redux.state.counter, 3, 'counter is 3');
           break;
         case 4:
-          t.equal(this.state.counter, 2, 'counter is 2');
+          t.equal(this.redux.state.counter, 2, 'counter is 2');
           break;
         default:
           break;

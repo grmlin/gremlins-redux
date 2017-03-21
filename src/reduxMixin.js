@@ -3,8 +3,8 @@ import { getStore, initComponent, addComponent, deleteComponent } from './storeM
 
 const reduxMixin = {
   created() {
-    this.state = {};
-    this.actions = {};
+    this.redux.state = {};
+    this.redux.actions = {};
     initComponent(this);
   },
   attached() {
@@ -13,14 +13,19 @@ const reduxMixin = {
   detached() {
     deleteComponent(this);
   },
-  dispatch(...params) {
-    const store = getStore();
-    store.dispatch(...params);
+  redux: {
+    dispatch(...params) {
+      const store = getStore();
+      store.dispatch(...params);
+    },
+    get store() {
+      return getStore();
+    }
   },
-  __reduxMapStateToComponent(state) {
+  __reduxMapStateToComponent(state, triggerUpdate = true) {
     if (typeof this.mapState === 'function') {
-      this.state = this.mapState(state);
-      if (typeof this.onStateUpdate === 'function') {
+      this.redux.state = this.mapState(state);
+      if (triggerUpdate && typeof this.onStateUpdate === 'function') {
         this.onStateUpdate();
       }
     }

@@ -16,7 +16,7 @@ const addComponentDispatchers = (component) => {
 
   for (const action in dispatchMap) {
     if (dispatchMap.hasOwnProperty(action)) {
-      component.actions[ action ] = (...params) => {
+      component.redux.actions[ action ] = (...params) => {
         const store = getStore();
         store.dispatch(dispatchMap[ action ](...params));
       }
@@ -25,7 +25,7 @@ const addComponentDispatchers = (component) => {
 };
 
 const deleteComponentDispatchers = (c) => {
-  const actions = c.actions;
+  const actions = c.redux.actions;
   for (const action in actions) {
     if (actions.hasOwnProperty(action)) {
       delete actions[ action ];
@@ -33,17 +33,17 @@ const deleteComponentDispatchers = (c) => {
   }
 };
 
-const updateComponentState = (component, state) => {
-  // console.log('updating state for', component.el);
-  component.__reduxMapStateToComponent(state);
+const updateComponentState = (component, state, triggerUpdate) => {
+  console.log('updating state for', component.el, state);
+  component.__reduxMapStateToComponent(state, triggerUpdate);
 };
 
 const propagateState = () => {
   const store = getStore();
   const state = store.getState();
 
-  // console.log('propagating state for all components', state);
-  components.forEach(c => updateComponentState(c, state));
+  console.log('propagating state for all components', state);
+  components.forEach(c => updateComponentState(c, state, true));
 };
 
 export const addStore = newStore => {
@@ -53,13 +53,15 @@ export const addStore = newStore => {
 
   __store = newStore;
   __store.subscribe(propagateState);
-  setTimeout(propagateState, 50);
 };
 
 export const initComponent = c => {
 };
 
 export const addComponent = c => {
+  const store = getStore();
+  const state = store.getState();
+  updateComponentState(c, state, false);
   addComponentDispatchers(c);
   components.add(c);
 };

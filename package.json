@@ -1,6 +1,6 @@
 {
   "name": "gremlins-redux",
-  "version": "0.1.0",
+  "version": "0.1.0-beta1",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src -d lib",
@@ -24,8 +24,6 @@
     "budo": "^9.4.7",
     "gremlins": "^2.0.0-beta1",
     "redux": "^3.6.0",
-    "tap-browser-color": "^0.1.2",
-    "tap-browser-console-color": "^2.1.2",
     "tape": "^4.6.3",
     "tape-dom": "0.0.12"
   }
