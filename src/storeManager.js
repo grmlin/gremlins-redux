@@ -34,7 +34,7 @@ const deleteComponentDispatchers = (c) => {
 };
 
 const updateComponentState = (component, state, triggerUpdate) => {
-  console.log('updating state for', component.el, state);
+  // console.log('updating state for', component.el, state);
   component.__reduxMapStateToComponent(state, triggerUpdate);
 };
 
@@ -42,7 +42,7 @@ const propagateState = () => {
   const store = getStore();
   const state = store.getState();
 
-  console.log('propagating state for all components', state);
+  // console.log('propagating state for all components', state);
   components.forEach(c => updateComponentState(c, state, true));
 };
 
